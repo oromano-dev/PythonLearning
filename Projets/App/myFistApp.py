@@ -63,8 +63,11 @@ class App(QtWidgets.QWidget):
         self.cbb_devisesFrom.setCurrentText(devise_to)
         self.cbb_devisesTo.setCurrentText(devise_from)
 
+        self.compute()
+
 myApp = QtWidgets.QApplication([])
 win = App()
+win.resize(150, 200)
 win.show()
 
 myApp.exec_()
