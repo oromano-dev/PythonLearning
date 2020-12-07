@@ -1,10 +1,10 @@
 from PySide2 import QtWidgets
-import currency_converter
+import currency_converter as cConverter
 
 class App(QtWidgets.QWidget):
     def __init__(self):
         super().__init__()
-        self.curConverter = currency_converter.CurrencyConverter()
+        self.curConverter = cConverter.CurrencyConverter()
         self.setWindowTitle("Convertisseur de devises")
         self.setup_ui()
         self.set_default_values()
@@ -47,13 +47,13 @@ class App(QtWidgets.QWidget):
         montant = self.spn_montant.value()
         devise_from = self.cbb_devisesFrom.currentText()
         devise_to = self.cbb_devisesTo.currentText()
-        resultat = self.curConverter.convert(montant, devise_from, devise_to)
-
-        # print("montant à convertir: ", str(montant))
-        # print("Devise de base: ", devise_from)
-        # print("Devise de conversion: ", devise_to)
-        # print(f"Conversion de {montant} {devise_from} en {devise_to}: {resultat}")
-        self.spn_montantConverti.setValue(resultat)
+        
+        try:
+            resultat = self.curConverter.convert(montant, devise_from, devise_to)
+        except cConverter.currency_converter.RateNotFoundError as rateError:
+            print("Impossible de faire la conversion: ", rateError)
+        else:
+            self.spn_montantConverti.setValue(resultat)
 
     def inverser_devises(self):
         # print("Inverser devise")
